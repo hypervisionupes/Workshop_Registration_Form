@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Any extra styles go below the import */
+body {
+  margin: 0;
+  background-color: #050508;
+}
