@@ -4,7 +4,7 @@ from database import get_db
 def addsubmission():
     try:
         db = get_db()
-        collection = db["registrations"]
+        collection = db["workshop_registration"]
 
         data = request.get_json()
 
@@ -47,7 +47,7 @@ def addsubmission():
         return jsonify({
             "success": True,
             "message": "Registration successful"
-        }), 201
+        }), 200
 
     except Exception as e:
         return jsonify({
