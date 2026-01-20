@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from database import get_db
+import re
 
 def addsubmission():
     try:
@@ -18,8 +19,30 @@ def addsubmission():
                 }), 400
 
         email = data["email"]
-        phone = data["phone"]
+        phone = str(data["phone"])
+        sap = str(data["sap"])
+        hyp_id = data.get("hypId", "")
 
+        if not re.fullmatch(r"\d{10}", phone):
+            return jsonify({
+                "success": False,
+                "message": "Phone number must be exactly 10 digits"
+            }), 400
+
+        if not re.fullmatch(r"5900\d{5}", sap):
+            return jsonify({
+                "success": False,
+                "message": "SAP ID must be 10 digits and start with 5900"
+            }), 400
+
+        if hyp_id:
+            if not hyp_id.startswith("HYPE") or hyp_id != hyp_id.upper():
+                return jsonify({
+                    "success": False,
+                    "message": "Hypervision ID must start with 'HYPE' "
+                }), 400
+
+        # Duplicate checks
         if collection.find_one({"email": email}):
             return jsonify({
                 "success": False,
@@ -34,12 +57,12 @@ def addsubmission():
 
         document = {
             "name": data["name"],
-            "sap": data["sap"],
+            "sap": sap,
             "email": email,
             "phone": phone,
             "orbit": data["orbit"],
             "expectations": data["expectations"],
-            "hypId": data.get("hypId", ""),
+            "hypId": hyp_id
         }
 
         collection.insert_one(document)
