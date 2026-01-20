@@ -33,23 +33,29 @@ const Register = () => {
   }, []);
 
   const validate = (name, value) => {
-    if (!value && name !== "hypId") {
+    if (!value) {
       if (name === "sap") return "SAP ID is required";
+      if (name === "hypId") return "Hypervision ID is required";
       return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
     }
 
-    if (name === "sap") {
-      if (!value.toString().startsWith("5900")) return "SAP ID must be valid.";
-      if (value.toString().length !== 9) return "SAP ID must be valid.";
+    if (name === "name") {
+      if (value.length < 2) return "Name must be at least 2 characters";
+      if (value.length > 100) return "Name must not exceed 100 characters";
+    } else if (name === "sap") {
+      const sapStr = value.toString();
+      if (!sapStr.startsWith("5000") && !sapStr.startsWith("5900")) return "SAP ID must start with 5000 or 5900";
+      if (sapStr.length !== 9) return "SAP ID must be 9 digits";
     } else if (name === "email") {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!re.test(value)) return "Enter a valid email";
     } else if (name === "phone") {
       if (!/^\d{10}$/.test(value)) return "Phone number must be 10 digits";
     } else if (name === "hypId") {
-      if (value && !value.startsWith("HYPE")) return "Enter valid ID";
+      if (!/^HYPE\d{4}$/.test(value.toUpperCase())) return "Format: HYPE1234";
     } else if (name === "expectations") {
       if (value.length < 5) return "Please elaborate your objectives.";
+      if (value.length > 500) return "Maximum 500 characters allowed";
     }
     return "";
   };
@@ -64,6 +70,9 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "sap" && value.length > 9) return;
+    if (name === "name" && value.length > 100) return;
+    if (name === "expectations" && value.length > 500) return;
+    if (name === "hypId" && value.length > 8) return;
     setFormData(prev => ({ ...prev, [name]: value }));
     setIsTyping(value.length > 0);
     if (error) setError("");
@@ -72,7 +81,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const required = ["name", "sap", "email", "phone", "orbit", "expectations"];
+    const required = ["name", "sap", "email", "phone", "orbit", "expectations", "hypId"];
     for (let field of required) {
       const msg = validate(field, formData[field]);
       if (msg) {
@@ -124,11 +133,11 @@ const Register = () => {
       <motion.div className="hv-card-wrapper">
 
         {/* PURPLE MONSTER */}
-        <motion.div 
+        <motion.div
           className="monster purp-monster"
-          animate={{ 
-            y: getPos(), 
-            x: isTyping ? 18 : 0, 
+          animate={{
+            y: getPos(),
+            x: isTyping ? 18 : 0,
             rotate: activeField === 'sap' ? -25 : (isTyping ? 15 : (submitted ? 10 : 0)),
             scale: isTyping ? 1.05 : 1
           }}
@@ -148,9 +157,9 @@ const Register = () => {
         </motion.div>
 
         {/* CYAN MONSTER */}
-        <motion.div 
+        <motion.div
           className="monster cyan-monster"
-          animate={{ 
+          animate={{
             y: getPos() - 10,
             x: isTyping ? -5 : 0,
             scale: error ? 0.8 : (isTyping || submitted ? 1.3 : 1),
@@ -170,9 +179,9 @@ const Register = () => {
         </motion.div>
 
         {/* DEEP BLUE MONSTER */}
-        <motion.div 
+        <motion.div
           className="monster deep-blue-monster"
-          animate={{ 
+          animate={{
             y: getPos() + 40,
             x: isTyping ? -18 : 0,
             rotate: activeField === 'sap' ? 25 : (isTyping ? -15 : (submitted ? -10 : 0)),
@@ -200,27 +209,27 @@ const Register = () => {
 
           <AnimatePresence mode="wait">
             {!submitted ? (
-              <motion.form 
+              <motion.form
                 key="form"
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="hv-vertical-stack" 
+                className="hv-vertical-stack"
                 onSubmit={handleSubmit}
               >
                 <div className="hv-field">
                   <label>Full Name *</label>
-                  <input name="name" placeholder="Your Name" onFocus={() => setActiveField('name')} onBlur={handleBlur} onChange={handleChange} value={formData.name} />
+                  <input name="name" placeholder="Your Name" maxLength="100" onFocus={() => setActiveField('name')} onBlur={handleBlur} onChange={handleChange} value={formData.name} />
                 </div>
                 <div className="hv-field">
                   <label>SAP ID *</label>
-                  <input name="sap" className="no-spin" placeholder="5900XXXXX" onFocus={() => setActiveField('sap')} onBlur={handleBlur} onChange={handleChange} value={formData.sap} />
+                  <input name="sap" className="no-spin" placeholder="5X00XXXXX" onFocus={() => setActiveField('sap')} onBlur={handleBlur} onChange={handleChange} value={formData.sap} />
                 </div>
                 <div className="hv-field">
                   <label>Email Address *</label>
-                  <input name="email" placeholder="email@domain.com" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
+                  <input name="email" type="email" placeholder="email@domain.com" maxLength="254" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
                 </div>
                 <div className="hv-field">
                   <label>Phone Number *</label>
-                  <input name="phone" placeholder="10 Digit Number" onFocus={() => setActiveField('phone')} onBlur={handleBlur} onChange={handleChange} value={formData.phone} />
+                  <input name="phone" type="tel" placeholder="10 Digit Number" maxLength="10" onFocus={() => setActiveField('phone')} onBlur={handleBlur} onChange={handleChange} value={formData.phone} />
                 </div>
                 <div className="hv-field">
                   <label>Your Current Year *</label>
@@ -234,11 +243,11 @@ const Register = () => {
                 </div>
                 <div className="hv-field">
                   <label>What do you hope to learn? *</label>
-                  <input name="expectations" placeholder="Your Objectives?" onFocus={() => setActiveField('expectations')} onBlur={handleBlur} onChange={handleChange} value={formData.expectations} />
+                  <input name="expectations" placeholder="Your Objectives?" maxLength="500" onFocus={() => setActiveField('expectations')} onBlur={handleBlur} onChange={handleChange} value={formData.expectations} />
                 </div>
                 <div className="hv-field">
-                  <label>Hypervision ID (Optional)</label>
-                  <input name="hypId" placeholder="HYPEXXXX" onFocus={() => setActiveField('hypId')} onBlur={handleBlur} onChange={handleChange} value={formData.hypId} />
+                  <label>Hypervision ID *</label>
+                  <input name="hypId" placeholder="HYPE1234" maxLength="8" onFocus={() => setActiveField('hypId')} onBlur={handleBlur} onChange={handleChange} value={formData.hypId} style={{ textTransform: 'uppercase' }} />
                 </div>
 
                 <button type="submit" className="hv-launch-button" disabled={isSubmitting}>
@@ -252,7 +261,7 @@ const Register = () => {
                 </button>
               </motion.form>
             ) : (
-              <motion.div 
+              <motion.div
                 key="success"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
