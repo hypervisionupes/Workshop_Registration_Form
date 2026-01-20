@@ -225,7 +225,7 @@ const Register = () => {
                 </div>
                 <div className="hv-field">
                   <label>Email Address *</label>
-                  <input name="email" type="email" placeholder="email@domain.com" maxLength="254" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
+                  <input name="email" type="email" placeholder="email@stu.upes.ac.in" maxLength="254" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
                 </div>
                 <div className="hv-field">
                   <label>Phone Number *</label>
