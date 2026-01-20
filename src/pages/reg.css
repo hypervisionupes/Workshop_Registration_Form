@@ -39,47 +39,49 @@
   z-index: 0;
 }
 
-/* ERROR BUBBLE - OVERFLOW SAFETY LOGIC */
+/* ERROR BUBBLE - Fixed text overflow and kept capsule shape */
 .error-bubble {
   position: absolute;
-  left: -160px;
-  top: 0;
-  background: linear-gradient(135deg, #1e3a8a 0%, #991b1b 100%);
+  right: 12px; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #991b1b 0%, #1e3a8a 100%);
   color: white;
-  padding: 8px 12px;
-  border-radius: 12px;
-  font-size: 0.65rem;
+  /* Increased padding and ensured wrapping for long text */
+  padding: 6px 14px;
+  border-radius: 9999px; 
+  font-size: 0.6rem;
+  /* Set a specific width to ensure text wraps instead of going out */
   width: 140px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  /* HIGHEST PRIORITY Z-INDEX */
-  z-index: 99999; 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10000; 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* Changed to normal to allow wrapping and center alignment */
   white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  line-height: 1.3;
+  text-align: center;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  opacity: 1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .error-bubble::after {
-  content: '';
-  position: absolute;
-  right: -5px;
-  top: 15px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 5px solid #991b1b;
+  display: none;
 }
 
-/* MONSTER POSITIONING WRAPPER */
+/* MONSTER POSITIONING WRAPPER - Strictly Intact */
 .hv-card-wrapper { 
   position: relative; 
   width: 100%; 
-  max-width: 420px; 
+  max-width: 380px; 
   z-index: 10; 
+  transition: max-width 0.3s ease;
 }
 
-/* MONSTERS - GRIP POSITIONING */
+/* MONSTERS - Strictly Intact */
 .monster { position: absolute; z-index: 60; border-radius: 12px; pointer-events: none; transition: transform 0.3s; }
 .monster-hand, .monster-hand-right { position: absolute; width: 16px; height: 10px; border-radius: 4px; z-index: 70; }
 
@@ -106,53 +108,113 @@
 /* FORM CARD */
 .hv-main-card {
   background: rgba(16, 26, 46, 0.85); backdrop-filter: blur(40px); border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 28px; padding: 35px; position: relative; z-index: 10; 
+  border-radius: 28px; padding: 25px; 
+  position: relative; z-index: 10; 
   box-shadow: 0 0 50px rgba(0, 212, 255, 0.15), inset 0 0 30px rgba(0, 212, 255, 0.05);
 }
-.hv-brand-section { text-align: center; margin-bottom: 25px; }
-.hv-logo-img { width: 65px; margin: 0 auto 10px; border-radius: 50%; filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7)); }
-.hv-brand-name { color: #51a2d4; font-size: 1.6rem; font-weight: 800; letter-spacing: 5px; }
-.hv-vertical-stack { display: flex; flex-direction: column; gap: 15px; }
-.hv-field label { display: block; font-size: 0.7rem; color: #00d4ff; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
 
-input, .hv-dropdown { width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); padding: 13px; border-radius: 10px; color: white; }
+.hv-brand-section { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+  margin-bottom: 20px; 
+}
+.hv-logo-img { width: 40px; border-radius: 50%; filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7)); }
+.hv-brand-name { color: #51a2d4; font-size: 1.3rem; font-weight: 800; letter-spacing: 4px; margin: 0; }
 
-/* SUBMIT BUTTON */
+.hv-vertical-stack { display: flex; flex-direction: column; gap: 12px; }
+.hv-field { position: relative; } 
+.hv-field label { display: block; font-size: 0.65rem; color: #00d4ff; text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
+
+input { 
+  width: 100%; 
+  box-sizing: border-box; 
+  background: rgba(0, 0, 0, 0.6); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 10px; 
+  border-radius: 10px; 
+  color: white; 
+  font-size: 0.85rem; 
+}
+
+/* DROPDOWN - Strictly Intact */
+.hv-dropdown { 
+  width: 100%; 
+  box-sizing: border-box; 
+  background: rgba(0, 0, 0, 0.6); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 0px 8px; 
+  border-radius: 8px; 
+  color: white; 
+  font-size: 0.7rem; 
+  height: 28px; 
+}
+
+.hv-dropdown option {
+  background: #101a2e;
+  color: white;
+  font-size: 0.7rem;
+}
+
 .hv-launch-button {
-  margin-top: 10px; background: linear-gradient(90deg, #007bff, #00d4ff); color: white; padding: 16px; border-radius: 12px; font-weight: 800;
-  display: flex; justify-content: center; align-items: center; gap: 12px; cursor: pointer; border: none;
+  margin-top: 5px; background: linear-gradient(90deg, #007bff, #00d4ff); color: white; padding: 14px; border-radius: 12px; font-weight: 800;
+  display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; border: none; font-size: 0.9rem;
+  overflow: hidden;
 }
 
-/* RESPONSIVE POINT-BY-POINT FIXES */
+/* SUCCESS MESSAGE STYLES */
+.hv-success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 0;
+  color: white;
+}
 
-/* Range 768px down to 514px - BRING IN FRONT TO PREVENT OVERFLOW */
+.hv-success-message h2 {
+  font-size: 1.5rem;
+  margin: 20px 0 10px;
+  color: #00d4ff;
+  font-weight: 800;
+}
+
+.hv-success-message p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* RESPONSIVE DESIGN - Strictly Intact */
+@media (min-width: 1024px) {
+  .hv-card-wrapper {
+    max-width: 460px;
+  }
+  .hv-main-card {
+    padding: 35px;
+  }
+}
+
 @media (max-width: 768px) {
+  .hv-card-wrapper { max-width: 90%; }
+}
+
+@media (max-width: 600px) {
   .error-bubble {
-    /* Moves the bubble in front of the monster/card corner so it can't overflow the screen */
-    left: -20px; 
-    top: -55px; 
-    width: 140px;
-  }
-  .error-bubble::after {
-    /* Arrow points down to the monster */
-    right: auto; left: 15px; top: auto; bottom: -8px;
-    border-left: 5px solid transparent; border-right: 5px solid transparent;
-    border-top: 8px solid #991b1b;
-    border-bottom: none;
+    left: 50%;
+    bottom: 110%;
+    top: auto;
+    right: auto;
+    transform: translateX(-50%);
+    width: 120px;
   }
 }
 
-/* Below 514px - Scaling for smaller screens */
 @media (max-width: 514px) {
   .hv-card-wrapper { transform: scale(0.9); }
-  .error-bubble {
-    left: 0;
-    top: -60px;
-    width: 150px;
-  }
 }
 
-/* Extra Small Phones */
 @media (max-width: 400px) {
-  .hv-card-wrapper { transform: scale(0.8); }
+  .hv-card-wrapper { transform: scale(0.85); }
 }
