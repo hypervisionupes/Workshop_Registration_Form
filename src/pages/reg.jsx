@@ -217,19 +217,19 @@ const Register = () => {
               >
                 <div className="hv-field">
                   <label>Full Name *</label>
-                  <input name="name" placeholder="Your Name" maxLength="100" onFocus={() => setActiveField('name')} onBlur={handleBlur} onChange={handleChange} value={formData.name} />
+                  <input name="name" placeholder="Enter Name" maxLength="100" onFocus={() => setActiveField('name')} onBlur={handleBlur} onChange={handleChange} value={formData.name} />
                 </div>
                 <div className="hv-field">
                   <label>SAP ID *</label>
-                  <input name="sap" className="no-spin" placeholder="5X00XXXXX" onFocus={() => setActiveField('sap')} onBlur={handleBlur} onChange={handleChange} value={formData.sap} />
+                  <input name="sap" className="no-spin" placeholder="Enter SAP ID" onFocus={() => setActiveField('sap')} onBlur={handleBlur} onChange={handleChange} value={formData.sap} />
                 </div>
                 <div className="hv-field">
                   <label>Email Address *</label>
-                  <input name="email" type="email" placeholder="email@stu.upes.ac.in" maxLength="254" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
+                  <input name="email" type="email" placeholder="Enter Mail ID" maxLength="254" onFocus={() => setActiveField('email')} onBlur={handleBlur} onChange={handleChange} value={formData.email} />
                 </div>
                 <div className="hv-field">
                   <label>Phone Number *</label>
-                  <input name="phone" type="tel" placeholder="10 Digit Number" maxLength="10" onFocus={() => setActiveField('phone')} onBlur={handleBlur} onChange={handleChange} value={formData.phone} />
+                  <input name="phone" type="tel" placeholder="Enter Contact Number" maxLength="10" onFocus={() => setActiveField('phone')} onBlur={handleBlur} onChange={handleChange} value={formData.phone} />
                 </div>
                 <div className="hv-field">
                   <label>Your Current Year *</label>
@@ -247,11 +247,11 @@ const Register = () => {
                 </div>
                 <div className="hv-field">
                   <label>Hypervision ID *</label>
-                  <input name="hypId" placeholder="HYPE1234" maxLength="8" onFocus={() => setActiveField('hypId')} onBlur={handleBlur} onChange={handleChange} value={formData.hypId} style={{ textTransform: 'uppercase' }} />
+                  <input name="hypId" placeholder="HYPEXXXX" maxLength="8" onFocus={() => setActiveField('hypId')} onBlur={handleBlur} onChange={handleChange} value={formData.hypId} style={{ textTransform: 'uppercase' }} />
                 </div>
 
                 <button type="submit" className="hv-launch-button" disabled={isSubmitting}>
-                  <span>{isSubmitting ? "LAUNCHING..." : "SUBMIT"}</span>
+                  <span>{isSubmitting ? "Submitting..." : "SUBMIT"}</span>
                   <motion.div
                     animate={isSubmitting ? { x: 500, y: -500, opacity: 0 } : {}}
                     transition={{ duration: 0.8, ease: "easeIn" }}
