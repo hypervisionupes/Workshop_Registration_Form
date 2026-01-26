@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from database import get_db
 import re
+from qrcodecreation import genQr
 
 def sanitize_string(value, max_length=None):
     """Sanitize string input to prevent NoSQL injection"""
@@ -159,9 +160,9 @@ def addsubmission():
             "expectations": expectations,
             "hypId": hyp_id
         }
-
         collection.insert_one(document)
 
+        genQr(document)
         return jsonify({
             "success": True,
             "message": "Registration successful"
