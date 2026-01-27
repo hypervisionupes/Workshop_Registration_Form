@@ -15,15 +15,41 @@ def send_registration_email(qr_img, email_id):
     qr_b64 = image_to_base64(qr_img)
 
     resend.Emails.send({
-        "from": "noreply@upeshypervision.in",  # use verified sender
-        "to": [email_id],
-        "subject": "Your QR Code",
-        "html": "<p>Your QR code is attached.</p>",
-        "attachments": [
-            {
-                "filename": "qr.png",
-                "content": qr_b64
-            }
-        ]
-    })
+    "from": "noreply@upeshypervision.in",
+    "to": [email_id],
+    "subject": "Your QR Code",
+    "html": f"""
+<table width="100%" bgcolor="#242424" cellpadding="0" cellspacing="0">
+    <tr>
+        <td align="center">
+            <img
+                src="https://raw.githubusercontent.com/dev-rjav/BORING_IMAGE_ASSET_TUFF/refs/heads/main/Workshop.png"
+                width="600"
+                style="display:block;"
+                alt=""
+            />
+        </td>
+    </tr>
 
+    <!-- WhatsApp icon -->
+    <tr>
+        <td align="center">
+            <a href="https://chat.whatsapp.com/LPjZ17PgePy7QqvIY2KzT7">
+                <img
+                    src="https://raw.githubusercontent.com/dev-rjav/BORING_IMAGE_ASSET_TUFF/main/download.png  "
+                    width="48"
+                    alt="Whatsapp"
+                    style="display:block;"
+                />
+            </a>
+        </td>
+    </tr>
+</table>
+""",
+    "attachments": [
+        {
+            "filename": "qr.png",
+            "content": qr_b64
+        }
+    ]
+})
