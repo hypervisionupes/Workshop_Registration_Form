@@ -3,7 +3,8 @@ from email_service import send_registration_email
 from PIL import Image
 import os
 
-logo_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "Qr_logo.png")
+logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Qr_logo.png")
+
 
 def genQr(document):
     data={
