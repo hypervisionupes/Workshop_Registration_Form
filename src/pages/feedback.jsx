@@ -46,9 +46,6 @@ export default function Feedback() {
         return `Please rate question ${i + 1}`;
     }
 
-    if (formData.feedback.length < 5)
-      return "Feedback is too short";
-
     return "";
   };
 
@@ -146,7 +143,7 @@ export default function Feedback() {
                 ))}
 
                 <div className="hv-field">
-                  <label>Additional Feedback *</label>
+                  <label>Additional Feedback (optional)</label>
                   <textarea
                     name="feedback"
                     className="hv-textarea"
@@ -167,7 +164,7 @@ export default function Feedback() {
               </form>
             ) : (
               <div className="hv-success-message">
-                <h2>Thank you! ⭐</h2>
+                <h2>Thank you!</h2>
                 <p>Your workshop feedback has been submitted.</p>
               </div>
             )}

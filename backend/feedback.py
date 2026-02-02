@@ -41,12 +41,6 @@ def postfeedback():
                 "message": "Name must not exceed 100 characters"
             }), 400
 
-        if len(feedback) < 5:
-            return jsonify({
-                "success": False,
-                "message": "Feedback must be at least 5 characters"
-            }), 400
-
         if len(feedback) > 1500:
             return jsonify({
                 "success": False,
