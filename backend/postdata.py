@@ -81,7 +81,7 @@ def addsubmission():
             }), 400
 
         # Validate SAP ID (can start with 5000 or 5900)
-        if not re.fullmatch(r"(5000|5900)\d{5}", sap):
+        if not re.fullmatch(r"(500\d{6}|5900\d{5})", sap):
             return jsonify({
                 "success": False,
                 "message": "SAP ID must be 9 digits and start with 5000 or 5900"
@@ -175,3 +175,4 @@ def addsubmission():
             "success": False,
             "message": "Server error occurred"
         }), 500
+
