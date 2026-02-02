@@ -1,78 +1,72 @@
 import React, { useState } from "react";
 import "./feedback.css";
 
+const QUESTIONS = [
+  "Overall quality of the workshop",
+  "Clarity of explanations",
+  "Hands-on usefulness",
+  "Speaker knowledge",
+  "Workshop pacing",
+  "Relevance to your learning goals",
+  "Would you recommend this workshop?"
+];
+
 export default function Feedback() {
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
-    sap: "",
-    hypId: "",
-    year: "",
+    hypervisionId: "",
+    ratings: Array(7).fill(0),
     feedback: ""
   });
 
-  /* -------- VALIDATION -------- */
-  const validate = (name, value) => {
-    if (!value) return `${name.toUpperCase()} is required`;
+  const handleRating = (qIndex, value) => {
+    const updated = [...formData.ratings];
+    updated[qIndex] = value;
+    setFormData(prev => ({ ...prev, ratings: updated }));
+  };
 
-    if (name === "name" && value.length < 2)
-      return "Name must be at least 2 characters";
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "feedback" && value.length > 1500) return;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (error) setError("");
+  };
 
-    if (name === "sap") {
-      if (!/^\d{9}$/.test(value)) return "SAP ID must be 9 digits";
-      if (!value.startsWith("5000") && !value.startsWith("5900"))
-        return "SAP ID must start with 5000 or 5900";
+  const validate = () => {
+    if (formData.name.length < 2) return "Name is required";
+    if (!/^HYPE\d{4}$/.test(formData.hypervisionId.toUpperCase()))
+      return "Hypervision ID must be HYPE1234";
+
+    for (let i = 0; i < formData.ratings.length; i++) {
+      if (formData.ratings[i] === 0)
+        return `Please rate question ${i + 1}`;
     }
 
-    if (name === "hypId") {
-      if (!/^HYPE\d{4}$/.test(value.toUpperCase()))
-        return "Format: HYPE1234";
-    }
-
-    if (name === "feedback") {
-      if (value.length < 5) return "Feedback is too short";
-      if (value.length > 5000) return "Max 5000 characters allowed";
-    }
+    if (formData.feedback.length < 5)
+      return "Feedback is too short";
 
     return "";
   };
 
-  /* -------- CHANGE HANDLER -------- */
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "feedback" && value.length > 5000) return;
-    if (name === "sap" && value.length > 9) return;
-    if (name === "hypId" && value.length > 8) return;
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (error) setError("");
-  };
-
-  /* -------- SUBMIT HANDLER -------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // frontend validation
-    for (let field in formData) {
-      const msg = validate(field, formData[field]);
-      if (msg) {
-        setError(msg);
-        return;
-      }
+    const msg = validate();
+    if (msg) {
+      setError(msg);
+      return;
     }
 
     setIsSubmitting(true);
 
-    // backend payload mapping
     const payload = {
       name: formData.name,
-      sap: formData.sap,
-      hypervisionId: formData.hypId,
-      year: formData.year,
+      hypervisionId: formData.hypervisionId.toUpperCase(),
+      ratings: formData.ratings,
       feedback: formData.feedback
     };
 
@@ -84,15 +78,12 @@ export default function Feedback() {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.message || "Submission failed");
         return;
       }
 
-      setError("");
       setSubmitted(true);
-
     } catch {
       setError("Cannot connect to server");
     } finally {
@@ -100,100 +91,88 @@ export default function Feedback() {
     }
   };
 
-  /* -------- UI -------- */
   return (
-    <div className="hv-root">
-      <div className="hv-card-wrapper">
+    <div className="feedback-page">
+      <div className="hv-root">
+        <div className="hv-card-wrapper">
+          <div className="hv-main-card">
 
-        {/* MONSTERS */}
-        <div className="monster purp-monster">
-          <div className="hv-eyes">
-            <div className="hv-eye"><div className="hv-pupil" /></div>
-            <div className="hv-eye"><div className="hv-pupil" /></div>
-          </div>
-          <div className="monster-smile" />
-          <div className="monster-hand purp-hand-top" />
-          <div className="monster-hand purp-hand-bottom" />
-        </div>
-
-        <div className="monster cyan-monster">
-          <div className="hv-eye-single-box">
-            <div className="hv-pupil" />
-          </div>
-          {error && <div className="error-bubble">{error}</div>}
-        </div>
-
-        <div className="monster deep-blue-monster">
-          <div className="hv-eye-single-box">
-            <div className="hv-pupil" />
-          </div>
-        </div>
-
-        {/* CARD */}
-        <div className="hv-main-card">
-          <div className="hv-brand-section">
-            <img src="/logo.jpeg" alt="Hypervision" className="hv-logo-img" />
-            <h1 className="hv-brand-name">HYPERVISION</h1>
-          </div>
-
-          {!submitted ? (
-            <form className="hv-vertical-stack" onSubmit={handleSubmit}>
-
-              <div className="hv-field">
-                <label>Name *</label>
-                <input name="name" value={formData.name} onChange={handleChange} />
-              </div>
-
-              <div className="hv-field">
-                <label>SAP ID *</label>
-                <input name="sap" className="no-spin" value={formData.sap} onChange={handleChange} />
-              </div>
-
-              <div className="hv-field">
-                <label>Hypervision ID *</label>
-                <input
-                  name="hypId"
-                  value={formData.hypId}
-                  onChange={handleChange}
-                  style={{ textTransform: "uppercase" }}
-                />
-              </div>
-
-              <div className="hv-field">
-                <label>Year *</label>
-                <select name="year" className="hv-dropdown" value={formData.year} onChange={handleChange}>
-                  <option value="">Select Year</option>
-                  <option value="1">1st Year</option>
-                  <option value="2">2nd Year</option>
-                  <option value="3">3rd Year</option>
-                  <option value="4">4th Year</option>
-                </select>
-              </div>
-
-              <div className="hv-field">
-                <label>Feedback *</label>
-                <textarea
-                  name="feedback"
-                  className="hv-textarea"
-                  value={formData.feedback}
-                  onChange={handleChange}
-                />
-                <div className="hv-char-count">
-                  {formData.feedback.length} / 5000
-                </div>
-              </div>
-
-              <button className="hv-launch-button" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "SUBMIT FEEDBACK"}
-              </button>
-
-            </form>
-          ) : (
-            <div className="hv-success-message">
-              <h2>Submission Successful </h2>
-              <p>Your feedback has been recorded.</p>
+            <div className="hv-brand-section">
+              <img src="/logo.jpeg" className="hv-logo-img" alt="Hypervision" />
+              <h1 className="hv-brand-name">HYPERVISION</h1>
             </div>
-          )}
+
+            {!submitted ? (
+              <form className="hv-vertical-stack" onSubmit={handleSubmit}>
+
+                <div className="hv-field">
+                  <label>Name *</label>
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="hv-field">
+                  <label>Hypervision ID *</label>
+                  <input
+                    name="hypervisionId"
+                    value={formData.hypervisionId}
+                    onChange={handleChange}
+                    style={{ textTransform: "uppercase" }}
+                  />
+                </div>
+
+                {QUESTIONS.map((q, i) => (
+                  <div className="hv-field" key={i}>
+                    <label>{q}</label>
+                    <div className="hv-stars">
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <span
+                          key={star}
+                          className={
+                            star <= formData.ratings[i]
+                              ? "hv-star filled"
+                              : "hv-star"
+                          }
+                          onClick={() => handleRating(i, star)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="hv-field">
+                  <label>Additional Feedback *</label>
+                  <textarea
+                    name="feedback"
+                    className="hv-textarea"
+                    value={formData.feedback}
+                    onChange={handleChange}
+                  />
+                  <div className="hv-char-count">
+                    {formData.feedback.length} / 1500
+                  </div>
+                </div>
+
+                {error && <div className="error-bubble">{error}</div>}
+
+                <button className="hv-launch-button" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "SUBMIT FEEDBACK"}
+                </button>
+
+              </form>
+            ) : (
+              <div className="hv-success-message">
+                <h2>Thank you! ⭐</h2>
+                <p>Your workshop feedback has been submitted.</p>
+              </div>
+            )}
+
+          </div>
         </div>
       </div>
     </div>
