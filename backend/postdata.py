@@ -170,7 +170,6 @@ def addsubmission():
 
     except Exception as e:
         # Don't expose internal error details in production
-        print(e)
         return jsonify({
             "success": False,
             "message": "Server error occurred"
