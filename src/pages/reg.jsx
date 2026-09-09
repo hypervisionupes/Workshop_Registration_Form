@@ -201,10 +201,10 @@ const Register = () => {
           {error && <div className="monster-frown" />}
         </motion.div>
 
-        <div className="hv-main-card">
+        <div className="hv-main-card" >
           <div className="hv-brand-section">
             <img src="/logo.jpeg" className="hv-logo-img" alt="Hypervision" />
-            <h1 className="hv-brand-name">HYPERVISION</h1>
+            <h1 className="hv-brand-name">HYPERVISION LAUNCHPAD 2026</h1>
           </div>
 
           <AnimatePresence mode="wait">
@@ -245,10 +245,10 @@ const Register = () => {
                   <label>What do you hope to learn? *</label>
                   <input name="expectations" placeholder="Your Objectives?" maxLength="500" onFocus={() => setActiveField('expectations')} onBlur={handleBlur} onChange={handleChange} value={formData.expectations} />
                 </div>
-                <div className="hv-field">
+                {/* <div className="hv-field">
                   <label>Hypervision ID *</label>
                   <input name="hypId" placeholder="HYPEXXXX" maxLength="8" onFocus={() => setActiveField('hypId')} onBlur={handleBlur} onChange={handleChange} value={formData.hypId} style={{ textTransform: 'uppercase' }} />
-                </div>
+                </div> */}
 
                 <button type="submit" className="hv-launch-button" disabled={isSubmitting}>
                   <span>{isSubmitting ? "Submitting..." : "SUBMIT"}</span>
@@ -256,7 +256,7 @@ const Register = () => {
                     animate={isSubmitting ? { x: 500, y: -500, opacity: 0 } : {}}
                     transition={{ duration: 0.8, ease: "easeIn" }}
                   >
-                    <Rocket size={18} />
+                    {/* <Rocket size={18} /> */}
                   </motion.div>
                 </button>
               </motion.form>
