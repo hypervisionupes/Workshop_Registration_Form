@@ -1,22 +1,37 @@
 # -------------------------
-# Python
+# Dependencies
+# -------------------------
+node_modules/
+.pnp
+.pnp.js
+
+# -------------------------
+# Next.js
+# -------------------------
+.next/
+out/
+build/
+dist/
+
+# -------------------------
+# Environment
+# -------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# -------------------------
+# Python (legacy)
 # -------------------------
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-.env
 venv/
 env/
 .venv/
-
-# -------------------------
-# Node / Vite / React
-# -------------------------
-node_modules/
-dist/
-build/
-.vite/
 
 # -------------------------
 # Logs
@@ -44,3 +59,7 @@ Thumbs.db
 # -------------------------
 .cache/
 .tmp/
+.vite/
+
+
+.gitignore

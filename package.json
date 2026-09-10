@@ -1,26 +1,28 @@
 {
   "name": "workshop-reg",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
     "@tailwindcss/postcss": "^4.1.18",
     "framer-motion": "^12.27.0",
     "lucide-react": "^0.562.0",
+    "next": "^15.3.0",
+    "nodemailer": "^6.10.0",
+    "qrcode": "^1.5.4",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "^7.13.0"
+    "resend": "^6.27.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.18",
-    "vite": "^4.4.5"
+    "tailwindcss": "^4.1.18"
   }
 }

@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /* REMOVE BROWSER ARROWS FROM SAP NUMBER FIELD */
 .no-spin::-webkit-inner-spin-button,
 .no-spin::-webkit-outer-spin-button {
@@ -117,7 +115,6 @@
   background: rgba(16, 26, 46, 0.85); backdrop-filter: blur(60px); border: 1px solid rgba(0, 212, 255, 0.2);
   border-radius: 28px; padding: 25px; 
   position: relative; z-index: 10; 
-  /* box-shadow: 0 0 50px rgba(0, 212, 255, 0.15), inset 0 0 30px rgba(0, 212, 255, 0.05); */
 }
 
 .hv-brand-section { 

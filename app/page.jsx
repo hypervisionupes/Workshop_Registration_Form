@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Rocket, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import './reg.css';
 
 const Register = () => {
@@ -89,7 +91,7 @@ const Register = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -246,7 +248,6 @@ const Register = () => {
                     animate={isSubmitting ? { x: 500, y: -500, opacity: 0 } : {}}
                     transition={{ duration: 0.8, ease: "easeIn" }}
                   >
-                    {/* <Rocket size={18} /> */}
                   </motion.div>
                 </button>
               </motion.form>
@@ -279,17 +280,6 @@ const Register = () => {
                     </svg>
                     <span>Join WhatsApp Group</span>
                   </a>
-
-                  <div className="hv-qr-wrapper">
-                    <div className="hv-qr-box">
-                      <img
-                        src="/whatsapp-group-qr.png"
-                        alt="WhatsApp Group QR Code"
-                        className="hv-whatsapp-qr"
-                      />
-                    </div>
-                    <span className="hv-qr-caption">Scan QR code to join group</span>
-                  </div>
                 </div>
               </motion.div>
             )}
