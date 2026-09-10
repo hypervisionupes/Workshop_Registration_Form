@@ -1,7 +1,17 @@
-from pymongo import MongoClient
+from supabase import create_client, Client
+import config
 
-MONGO_URI = "mongodb+srv://blackfalconx69_db_user:t2k6FxnaHMkFYXM9@cluster0.ms0ky1p.mongodb.net/?appName=Cluster0/"
-client = MongoClient(MONGO_URI)
-db = client["codehustle_hackathon"]  # Database name
+_supabase_client: Client = None
+
+def get_supabase() -> Client:
+    """Initialize and return the Supabase client instance."""
+    global _supabase_client
+    if _supabase_client is None:
+        if not config.SUPABASE_URL or not config.SUPABASE_KEY:
+            raise ValueError("SUPABASE_URL and SUPABASE_KEY must be configured in environment or .env")
+        _supabase_client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
+    return _supabase_client
+
+# Alias for backward compatibility with previous codebase
 def get_db():
-    return db
+    return get_supabase()
